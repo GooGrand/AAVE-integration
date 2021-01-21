@@ -49,7 +49,7 @@ function createMarketApprovance(){
             await web3.eth.sendTransaction(approveTx);
         }
  
-        const tx = await marketplace.requests.placeCollateral(loanAddress, borrowerAddress);
+        const tx = await this.marketplace.requests.placeCollateral(loanAddress, borrowerAddress);
  
         await web3.eth.sendTransaction(tx);
     }
