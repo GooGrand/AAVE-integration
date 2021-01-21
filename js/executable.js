@@ -36,18 +36,16 @@ function createLoanRequest(){
 }
 
 function createMarketApprovance(){
-    // loanData comes from calling await marketplace.requests.getLoanData(requestAddress);
-    const { loanAddress, collateralType, collateralAmount, state } = loanData;
-    const borrowerAddress = '0x27499a2aaaa3a7a4a98a3274dad897' // The wallet that places collateral
+    const { loanAddress, collateralType, collateralAmount, state } = await this.marketplace.requests.getLoanData(requestAddress);
  
-    const isCollateralPriceUpdated = await marketplace.requests.isCollateralPriceUpdated(loanAddress);
+    const isCollateralPriceUpdated = await this.marketplace.requests.isCollateralPriceUpdated(loanAddress);
  
     if (state === "WaitingForCollateral" && isCollateralPriceUpdated) {
-        const isApproved = await marketplace.utils.isTransferApproved(
+        const isApproved = await this.marketplace.utils.isTransferApproved(
             borrowerAddress, collateralType, collateralAmount
         );
         if (!isApproved) {
-            const approveTx = await marketplace.utils.approveTransfer(borrowerAddress, collateralType);
+            const approveTx = await this.marketplace.utils.approveTransfer(borrowerAddress, collateralType);
             await web3.eth.sendTransaction(approveTx);
         }
  
